@@ -1,0 +1,20 @@
+greeting_prompt: |
+  Hello! How can I assist you today?
+
+dummy_template: |
+  This is a dummy chat prompt. The past conversation is:
+  {history}
+
+  The user query is:
+  {query}
+
+alternative_dummy_template: |
+  This is an alternative to the dummy prompt to practice building an inputs dictionary where the keys\\ 
+  can vary in name. Here we have the chat history:
+  {history}
+
+  And the user query:
+  {query}
+
+  In this prompt we also have an additional user input:
+  {additional_input}
