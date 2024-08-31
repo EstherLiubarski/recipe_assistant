@@ -27,4 +27,21 @@ class ChatInputHandler(BaseInputHandler):
             inputs["additional_input"] = additional_input
 
         return inputs
+    
+
+    @staticmethod
+    def make_chain(prompt:str, model):
+        """Make an LLM chain
+
+        Args:
+            prompt (str): prompt template
+            model (OpenAI): OpenAI model
+
+        Returns:
+            _type_: _description_
+        """
+        
+        return prompt | model
+    
+
         

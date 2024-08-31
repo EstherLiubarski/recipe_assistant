@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
-class PromptPopulator(ABC):
+class BasePromptPopulator(ABC):
     
-    def format_prompt(template:str, arguments: dict) -> str:
+    @abstractmethod
+    def format_inputs_into_template(template:str, arguments: dict) -> str:
         """Format the arguments into the prompt template
 
         Args:
@@ -17,3 +18,7 @@ class PromptPopulator(ABC):
             return template.format(**arguments)
         except KeyError as e:
             raise ValueError(f"Missing key in arguments: {e}")
+        
+    @abstractmethod
+    def format_langchain_prompt():
+        pass
