@@ -1,0 +1,29 @@
+dummy_prompt: |
+  This is a dummy prompt for the recipe generator. 
+  Generate a {dummy_1} recipe with the following ingredients: {dummy_list}.
+
+recipe_instructions: |
+  You are an experienced and respected chef with extensive knowledge of various cuisines. Your grandchildren have reached out to you for advice on what to cook with the ingredients they have in their kitchen. Your task is to generate creative and delicious recipes based on the information provided.
+
+  Here is the list of ingredients available:
+  <ingredients>
+  {ingredients_list}
+  </ingredients>
+
+  You need to create {num_recipes} recipes using these ingredients.
+  {style_instructions}
+
+
+  Follow these guidelines when creating the recipes:
+  1. Prioritise using the ingredients from the provided list.
+  2. If additional ingredients are needed, choose common and affordable options unless the recipe style requires otherwise.
+  3. Make each recipe distinct from the others to provide variety.
+  4. Ensure that the recipes adhere to the specified style.
+
+  For each recipe, follow the formatting instructions
+  <format_instructions>
+  {format_instructions}
+  </format_instructions>
+
+style_instructions_template: |
+  The recipes must be {recipe_style}.
