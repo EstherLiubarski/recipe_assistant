@@ -19,22 +19,22 @@ load_dotenv()
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 @pytest.fixture
-def dummy_1():
+def recipe_options():
     return "healthy"
 
 @pytest.fixture
-def dummy_list():
+def ingredients_list():
     return ["ingredient 1", "ingredient 2", "ingredient 3"]
 
 @pytest.fixture
 def input_dict():
-    return {"dummy_1":"healthy", 
-            "dummy_list": ["ingredient 1", "ingredient 2", "ingredient 3"]}
+    return {"recipe_options":"healthy", 
+            "ingredients_list": ["ingredient 1", "ingredient 2", "ingredient 3"]}
 
-def test_input_dict_maker(dummy_1, dummy_list):
-    input_dict = GeneratorInputHandler.make_inputs_dict(dummy_1, dummy_list)
-    assert input_dict=={"dummy_1":dummy_1,
-                        "dummy_list": dummy_list}
+def test_input_dict_maker(recipe_options, ingredients_list):
+    input_dict = GeneratorInputHandler.make_inputs_dict(recipe_options, ingredients_list)
+    assert input_dict=={"recipe_options":recipe_options,
+                        "ingredients_list": ingredients_list}
     
 def test_prompt_populator(input_dict):
     prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
@@ -63,33 +63,32 @@ def test_choose_style_instructions(recipe_options, style_instructions_template, 
     )
     assert style_instructions == expected_output
 
-def construct_llm(model_name):
-    return ChatOpenAI(model=model_name, api_key=OPENAI_KEY)
-
+def construct_llm(provider, model_name):
+    if provider == "OpenAI":
+        return ChatOpenAI(model=model_name, api_key=OPENAI_KEY)
+    else:
+        return "No provider specified"
+    
 # def test_langchain_chain():
-# inputs
 ingredients_list = ["celery", "yogurt", "gnocchi", "turkey mince"]
 num_recipes = 2
 recipe_options = ["Healthy", "Hearty"]
 # recipe_options = ["No Specifications"]
 recipe_style = GeneratorInputHandler.format_recipe_style(recipe_options)
 
-# prompt template
 prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
 style_instructions_template = prompt_repo['style_instructions_template']
 style_instructions = GeneratorPromptPopulator.choose_style_instructions(recipe_options,style_instructions_template)
 
 recipe_instructions = prompt_repo['recipe_instructions']
-inputs_dict = GeneratorInputHandler.make_inputs_dict(ingredients_list = ingredients_list,
-                                                        num_recipes = num_recipes,
-                                                        recipe_style = recipe_style,)
-# system_prompt = GeneratorPromptPopulator.format_inputs_into_template(template=recipe_instructions,
-#                                                                 arguments={"style_instructions":style_instructions})
 
-# parser
+inputs_dict = GeneratorInputHandler.make_inputs_dict(
+    ingredients_list = ingredients_list,
+    num_recipes = num_recipes,
+    recipe_style = recipe_style,)
+
 parser = JsonOutputParser(pydantic_object=Recipe)
 
-# inputs go into the prompt tempalate
 prompt = GeneratorPromptPopulator.format_langchain_prompt(
     template=recipe_instructions,
     input_variables=inputs_dict.keys(),
@@ -98,13 +97,16 @@ prompt = GeneratorPromptPopulator.format_langchain_prompt(
 
 print("prompt:\n", prompt)
 
-# make chain
-chain = GeneratorInputHandler.make_chain(prompt,
-                                            model=construct_llm("gpt-4o-mini-2024-07-18"),
-                                            parser=parser)
+chain = GeneratorInputHandler.make_chain(
+    prompt,
+    model=construct_llm("OpenAI", "gpt-4o-mini-2024-07-18"),
+    parser=parser)
 
-# run chain
-response = chain.invoke(inputs_dict)
-print("llm repsonse:\n", response)
+invoker=OpenAIInvoker()
+
+response = invoker.get_response(inputs_dict, chain=chain, dev_mode=False,)
+print("llm response:", response)
+response = invoker.get_response(inputs_dict, chain=chain, dev_mode=True,)
+print("dev response:", response)
 
 
