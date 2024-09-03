@@ -34,14 +34,17 @@ with st.sidebar:
                                     # value=['Celery', 'Yoghurt', 'Sausages'],
                                     key='user_ingredients')
         
-        st.session_state.recipe_style_list = st.multiselect("Select recipe type", options=st.session_state.recipe_options)
+        st.session_state.recipe_style_list = st.multiselect(
+            "Select recipe type", 
+            options=st.session_state.recipe_options,
+            )
+        
         ingredients_button=st.form_submit_button(label='Generate recipe')
         if ingredients_button:
             st.session_state.submit_ingredients=True
 
 
-recipe_col, chat_col = st.columns([7,3], gap="medium")
-st.write(st.session_state.submit_ingredients)
+recipe_col, chat_col = st.columns([6,4], gap="medium")
 
 with recipe_col:
     if not st.session_state.submit_ingredients:
@@ -51,8 +54,8 @@ with recipe_col:
         # TODO: error for if user hasn't submitted ingredients
         display_generated_recipes()
 
-with chat_col:
-    with st.expander(label='Chat Bot', expanded=True): # TODO: fix chat bot container layout
+with chat_col: # TODO: put below script into st_chat_bot and put chat bot workflow into its own file
+    with st.expander(label='Chat Bot', expanded=True): 
         display_history()
         # with st.chat_message("assistant")
 

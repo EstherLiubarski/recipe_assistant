@@ -8,7 +8,7 @@ class State:
         session_states_init={
             "chat_history":[{"role": "assistant", "content": "Hi there, I'm your friendly recipe assistant! How can I help you?"}],
             "prompt_repo": None,
-            "recipe_options":['Healthy', 'Quick', 'Hearty', 'Light', 'Vegan', 'No Specifications'],
+            "recipe_options":['Healthy', 'Quick', 'Hearty', 'Light', 'Vegan',],
             "ingredients_list":[],
             "recipe_style_list":[],
             "submit_ingredients": False,
