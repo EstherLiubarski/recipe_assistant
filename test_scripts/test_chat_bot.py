@@ -61,10 +61,12 @@ def test_call_llm(test_llm_invoker):
     
     assert llm_response == formatted_prompt
 
-
-def construct_llm(model_name):
-    return ChatOpenAI(model=model_name, api_key=OPENAI_KEY)
-
+def construct_llm(provider, model_name):
+    if provider == "OpenAI":
+        return ChatOpenAI(model=model_name, api_key=OPENAI_KEY)
+    else:
+        return "No provider specified"
+    
 def test_reformatted_prompt():
     history = [
         {'role': 'assistant', 'content': "Hi there, I'm your friendly recipe assistant! How can I help you?"},
@@ -82,24 +84,29 @@ def test_reformatted_prompt():
     
     assert formatted_history == expected_output, f"Expected {expected_output}, but got {formatted_history}"
 
-def test_langchain_chain():
-    history = [{'role': 'assistant', 'content': "Hi there, I'm your friendly recipe assistant! How can I help you?"}, 
-                {'role': 'user', 'content': 'What is swiss chard?'}, 
-                {'role': 'assistant', 'content': 'Swiss chard is a leafy green vegetable that belongs to the same family as beets and spinach.'}, ]
-    formatted_history = ChatPromptPopulator.format_history(history)
+# def test_langchain_chain():
+history = [{'role': 'assistant', 'content': "Hi there, I'm your friendly recipe assistant! How can I help you?"}, 
+            {'role': 'user', 'content': 'What is swiss chard?'}, 
+            {'role': 'assistant', 'content': 'Swiss chard is a leafy green vegetable that belongs to the same family as beets and spinach.'}, ]
+formatted_history = ChatPromptPopulator.format_history(history)
 
-    user_query = "What's 100 ml water in grams?"
+user_query = "What's 100 ml water in grams?"
 
-    prompt_repo = load_prompt_repo("chat")
-    system_prompt = prompt_repo['system_prompt']
+prompt_repo = load_prompt_repo("chat")
+system_prompt = prompt_repo['system_prompt']
 
-    prompt = ChatPromptPopulator.format_langchain_prompt(system_prompt, formatted_history)
+prompt = ChatPromptPopulator.format_langchain_prompt(system_prompt, formatted_history)
 
-    chain = ChatInputHandler.make_chain(prompt,model=construct_llm("gpt-4o-mini-2024-07-18"))
+llm=construct_llm("gpt-4o-mini-2024-07-18")
+chain = ChatInputHandler.make_chain(prompt,model=llm)
 
-    assert chain is not None
+assert chain is not None
 
-    print(chain)
+print(chain)
 
-    response = chain.invoke({"user_query":user_query})
-    print(response)
+invoker=OpenAIInvoker()
+
+response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=False,)
+print("llm response:", response)
+response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=True,)
+print("dev response:", response)
