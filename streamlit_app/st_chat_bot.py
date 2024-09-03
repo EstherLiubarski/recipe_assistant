@@ -55,7 +55,7 @@ def invoke_chat_bot(user_query:str, chat_history:list[dict]) -> str:
     # Chain the model and prompt
     chain = ChatInputHandler.make_chain(prompt, llm)
     invoker=OpenAIInvoker()
-    llm_response = invoker.get_response({"user_query": user_query}, chain, dev_mode=True)
+    llm_response = invoker.get_response({"user_query": user_query}, chain, dev_mode=False)
     print(llm_response)
 
     return llm_response.content
