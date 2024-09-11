@@ -1,6 +1,7 @@
 import sys
 import pathlib
 import os
+import json
 from dotenv import load_dotenv
 
 sys.path.append(f"{pathlib.Path(__file__).parent.parent.resolve()}")
@@ -10,9 +11,7 @@ from src.llm_invokers.openai_invoker import OpenAIInvoker
 from src.recipe_generator.generator_prompt_populator import GeneratorPromptPopulator
 from src.recipe_generator.recipe_object import Recipe
 from langchain_core.output_parsers import JsonOutputParser
-from langchain.output_parsers import PydanticOutputParser
 from langchain_openai import ChatOpenAI
-from src.parsers.pydantic_parsers import make_pydantic_parser
 
 load_dotenv()
 OPENAI_KEY=os.getenv("OPENAI_KEY")
@@ -23,7 +22,7 @@ def construct_llm(provider, model_name):
     else:
         return "No provider specified"
     
-def generate_recipes(ingredients_list: list, recipe_options: list, num_recipes: int) -> list[Recipe]:
+def generate_llm_recipes(ingredients_list: list, recipe_options: list, num_recipes: int) -> list[dict]:
     """Execute the entire recipe generator workflow to return the generated recipe
 
     Args:
@@ -32,7 +31,7 @@ def generate_recipes(ingredients_list: list, recipe_options: list, num_recipes: 
         num_recipes (int): number of different recipes to generate
 
     Returns:
-        list: list of Pydantic recipe objects for each generated recipe
+        list: list of dictionaries describing recipe objects for each generated recipe
     """
     recipe_style = GeneratorInputHandler.format_recipe_style(recipe_options)
 
@@ -47,7 +46,6 @@ def generate_recipes(ingredients_list: list, recipe_options: list, num_recipes: 
         num_recipes = num_recipes,
         recipe_style = recipe_style,)
 
-    # parser = PydanticOutputParser(pydantic_object=Recipe)
     parser = JsonOutputParser(pydantic_object=Recipe)
 
     prompt = GeneratorPromptPopulator.format_langchain_prompt(
@@ -55,8 +53,6 @@ def generate_recipes(ingredients_list: list, recipe_options: list, num_recipes: 
         input_variables=inputs_dict.keys(),
         format_instructions = parser.get_format_instructions(),
         style_instructions=style_instructions)
-
-    # print("prompt:\n", prompt)
 
     chain = GeneratorInputHandler.make_chain(
         prompt,
@@ -66,5 +62,22 @@ def generate_recipes(ingredients_list: list, recipe_options: list, num_recipes: 
     invoker=OpenAIInvoker()
 
     response = invoker.get_response(inputs_dict, chain=chain, dev_mode=False,)
-    print("llm response:", response)
     return response
+
+def load_mock_recipes(mock_recipe_file:str) -> list[dict]:
+    """Load a json file containing a ready-generated list of recipes.
+    Mimics the response generated from an LLM.
+
+    Args:
+        mock_recipe_file (str): file name containing the recipe. Must be a JSON file.
+
+    Returns:
+        list[dict]: mock recipes loaded from the json file.
+    """
+    project_root = pathlib.Path(__file__).parent.parent.resolve()
+    file_path = project_root / 'recipe_generator' / 'generated_recipes' / f'{mock_recipe_file}'
+
+    with open(file_path, 'r') as file:
+        recipes = json.load(file)
+    return recipes
+

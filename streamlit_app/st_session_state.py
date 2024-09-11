@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 class State:
     def init_session_states() -> None:
         """Initiate all session state variables

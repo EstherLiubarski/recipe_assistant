@@ -5,57 +5,56 @@ from dotenv import load_dotenv
 import streamlit as st
 
 sys.path.append(f"{pathlib.Path(__file__).parent.parent.resolve()}")
+from src.chat_bot.chat_bot_script import invoke_chat_bot
+from st_utils import append_user_history
 
-from src.core.base_template_retriever import BaseTemplateRetriever
-from src.chat_bot.chat_input_handler import ChatInputHandler
-from src.chat_bot.chat_prompt_populator import ChatPromptPopulator
-from src.llm_invokers.openai_invoker import OpenAIInvoker
-from langchain_openai import ChatOpenAI
 
 load_dotenv()
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
-def construct_llm(provider, model_name):
-    if provider == "OpenAI":
-        return ChatOpenAI(model=model_name, api_key=OPENAI_KEY)
-    else:
-        return "No provider specified"
+def display_history():
+    for message in st.session_state.chat_history:
+        with st.chat_message(message['role']):
+            st.markdown(message['content'])
 
-def invoke_chat_bot(user_query:str, chat_history:list[dict]) -> str:
-    """Execute the chat bot process to get a response from the chat LLM
+def choose_llm_response(dev_mode:bool, user_query:str) -> str:
+    """Choose which chat bot response to return based on whether app is running in dev_mode.
 
     Args:
-        user_query (str): user question to answer
-        chat_history (list[dict]): the user-bot conversation so far in format
-            [{"role": assistant, "content": assistant content},
-             {"role": user,      "content": user content},
-             {"role": assistant, "content": content},
-             ...
-            ]
+        dev_mode (bool): Whether app is in dev mode or not
+        user_query (str): user query
 
     Returns:
-        str: response from the LLM to the user query given the chat history
+        str: relevant chat bot response
+            Return the user query if in dev mode.
+            Invoke LLM to generate chat bot response if not in dev mode.
+    """
+    if dev_mode:
+        return user_query
+    else:
+        return invoke_chat_bot(user_query, st.session_state.chat_history)
+            
+
+def display_chat_bot(dev_mode=True) -> None:
+    """Display the user-LLM chat
+
+    Args:
+        dev_mode (bool): whether app is running in dev mode
     """
     
-    if not st.session_state.prompt_repo:
-        st.session_state.prompt_repo = BaseTemplateRetriever.load_templates("chat")
+    # Display previous chat history
+    display_history()
 
-    # Prepare chat history to be in a compatible format for LLM invokation
-    formatted_history = ChatPromptPopulator.format_history(chat_history)
-
-    # Get system prompt
-    system_prompt=st.session_state.prompt_repo['system_prompt']
-
-    # Join system prompt and formatted chat history into an executable prompt
-    prompt = ChatPromptPopulator.format_langchain_prompt(system_prompt,formatted_history)
-
-    # Construct model
-    llm=construct_llm("OpenAI", "gpt-4o-mini-2024-07-18")
+    # Text input for user to submit query
+    user_query=st.chat_input("Ask me anything.", 
+                                    key="user_query",
+                                    on_submit=append_user_history,)
     
-    # Chain the model and prompt
-    chain = ChatInputHandler.make_chain(prompt, llm)
-    invoker=OpenAIInvoker()
-    llm_response = invoker.get_response({"user_query": user_query}, chain, dev_mode=False)
-    print(llm_response)
+    if user_query:
+            
+            # Get response to user query 
+            llm_response = choose_llm_response(dev_mode, user_query)
 
-    return llm_response.content
+            # Append LLM response to chat history
+            st.session_state.chat_history.append({"role": "assistant", "content":llm_response})
+            st.rerun()
