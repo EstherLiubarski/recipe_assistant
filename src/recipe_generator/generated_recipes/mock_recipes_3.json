@@ -1,0 +1,64 @@
+[
+    {
+        "recipe_id": 1, 
+        "name": "Couscous with Roast Chicken and Vegetables", 
+        "ingredients": {
+            "couscous": "1 cup", 
+            "roast chicken": "2 cups, shredded", 
+            "courgettes": "1, diced", 
+            "peppers": "1, diced", 
+            "milk": "1/2 cup", 
+            "eggs": "2", 
+            "olive oil": "2 tablespoons", 
+            "salt": "to taste", 
+            "pepper": "to taste", 
+            "herbs (parsley or basil)": "a handful, chopped"
+        }, 
+        "instructions": [
+            "In a medium saucepan, bring 1 cup of water to a boil. Add a pinch of salt and 1 cup of couscous. Stir, remove from heat, cover, and let sit for 5 minutes.",
+            "In a skillet, heat olive oil over medium heat. Add the diced courgettes and peppers, and sauté until tender, about 5-7 minutes.",
+            "In a bowl, whisk together the eggs and milk. Pour over the sautéed vegetables and cook until just set, stirring gently.",
+            "Fluff the couscous with a fork and mix in the shredded roast chicken and the vegetable-egg mixture.",
+            "Season with salt, pepper, and chopped herbs. Serve warm."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 25, 
+        "allergens": [
+            "egg",
+            "milk"
+        ], 
+        "difficulty": "easy"
+    }, 
+    {
+        "recipe_id": 2, 
+        "name": "Stuffed Peppers with Couscous and Chicken", 
+        "ingredients": {
+            "couscous": "1 cup", 
+            "roast chicken": "2 cups, shredded", 
+            "peppers": "4, halved and seeded", 
+            "courgettes": "1, grated", 
+            "milk": "1/4 cup", 
+            "eggs": "1", 
+            "olive oil": "2 tablespoons", 
+            "salt": "to taste", 
+            "pepper": "to taste", 
+            "cheese (optional)": "1/2 cup, grated"
+        }, 
+        "instructions": [
+            "Preheat the oven to 375°F (190°C).", 
+            "Cook the couscous according to package instructions, using 1 cup of water.", 
+            "In a bowl, combine cooked couscous, shredded roast chicken, grated courgettes, milk, and the beaten egg. Mix well and season with salt and pepper.", 
+            "Stuff each half of the pepper with the couscous mixture and place in a baking dish.", 
+            "Drizzle with olive oil and top with cheese if using.", 
+            "Cover with foil and bake for 25-30 minutes until the peppers are tender. Remove the foil for the last 5 minutes to brown the cheese if added.", 
+            "Serve warm."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 40, 
+        "allergens": [
+            "egg", 
+            "milk"
+        ], 
+        "difficulty": "medium"
+    }
+]

@@ -1,0 +1,57 @@
+[
+    {
+        "recipe_id": 1, 
+        "name": "Buckwheat Vegetable Stir-Fry", 
+        "ingredients": {
+            "buckwheat": "1 cup", 
+            "carrots": "2 medium, sliced", 
+            "peas": "1 cup (fresh or frozen)", 
+            "olive oil": "2 tablespoons", 
+            "soy sauce": "2 tablespoons", 
+            "garlic": "2 cloves, minced", 
+            "salt": "to taste", 
+            "pepper": "to taste"
+        }, 
+        "instructions": [
+            "Rinse buckwheat under cold water and cook according to package instructions (typically simmering in water for about 15 minutes).", 
+            "While buckwheat is cooking, heat olive oil in a large skillet or wok over medium-high heat.", 
+            "Add garlic and sauté for about 30 seconds until fragrant.", 
+            "Add sliced carrots and stir-fry for about 5 minutes until they begin to soften.", 
+            "Add peas and cook for another 2-3 minutes.", 
+            "Once the buckwheat is cooked, drain any excess water and add it to the skillet.", 
+            "Pour in soy sauce, season with salt and pepper, and stir everything together until well combined and heated through.", 
+            "Serve warm."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 25, 
+        "allergens": ["soy"], 
+        "difficulty": "easy"
+    }, 
+    {
+        "recipe_id": 2, 
+        "name": "Carrot and Pea Buckwheat Salad", 
+        "ingredients": {
+            "buckwheat": "1 cup", 
+            "carrots": "2 medium, grated", 
+            "peas": "1 cup (fresh or frozen, thawed)", 
+            "olive oil": "3 tablespoons", 
+            "lemon juice": "2 tablespoons", 
+            "fresh parsley": "1/4 cup, chopped", 
+            "salt": "to taste", 
+            "pepper": "to taste"
+        }, 
+        "instructions": [
+            "Cook buckwheat according to package instructions (usually simmering in water for about 15 minutes), then drain and let it cool.", 
+            "In a large bowl, combine the grated carrots and peas.", 
+            "Once the buckwheat has cooled, add it to the bowl with the carrots and peas.", 
+            "In a small bowl, whisk together olive oil, lemon juice, salt, and pepper.", 
+            "Pour the dressing over the salad and toss to combine.", 
+            "Garnish with chopped parsley and serve chilled or at room temperature."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 30, 
+        "allergens": [], 
+        "difficulty": 
+        "easy"
+    }
+]

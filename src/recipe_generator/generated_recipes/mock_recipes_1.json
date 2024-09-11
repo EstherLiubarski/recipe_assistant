@@ -1,0 +1,57 @@
+[
+    {
+        "recipe_id": 1, 
+        "name": "Buckwheat Vegetable Stir-Fry", 
+        "ingredients": {
+            "buckwheat": "1 cup", 
+            "carrots": "2 medium, julienned", 
+            "peas": "1 cup", 
+            "olive oil": 
+            "2 tablespoons", 
+            "soy sauce": "2 tablespoons", 
+            "garlic": "2 cloves, minced", 
+            "salt": "to taste", 
+            "pepper": "to taste"
+        }, 
+        "instructions": [
+            "Rinse the buckwheat under cold water and cook it according to package instructions. Set aside.", 
+            "In a large pan, heat olive oil over medium heat.", 
+            "Add minced garlic and sauté for about 30 seconds until fragrant.", 
+            "Add the julienned carrots and stir-fry for 3-4 minutes until they start to soften.", 
+            "Add the peas and stir-fry for another 2-3 minutes.", 
+            "Stir in the cooked buckwheat and soy sauce. Mix well.", 
+            "Season with salt and pepper to taste, and cook for an additional 2 minutes.", 
+            "Serve hot."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 25, 
+        "allergens": ["soy"], 
+        "difficulty": "easy"
+    }, 
+    {
+        "recipe_id": 2, 
+        "name": "Carrot and Pea Buckwheat Salad", 
+        "ingredients": {
+            "buckwheat": "1 cup", 
+            "carrots": "2 large, grated", 
+            "peas": "1 cup, cooked", 
+            "lemon juice": "2 tablespoons", 
+            "olive oil": "3 tablespoons", 
+            "fresh parsley": "1/4 cup, chopped", 
+            "salt": "to taste", 
+            "pepper": "to taste"
+        }, 
+        "instructions": [
+            "Cook the buckwheat according to package instructions. Drain and let it cool.", 
+            "In a large bowl, combine the grated carrots and cooked peas.", 
+            "Add the cooled buckwheat to the bowl.", 
+            "In a small bowl, whisk together lemon juice, olive oil, salt, and pepper.", 
+            "Pour the dressing over the salad and toss to combine.", 
+            "Garnish with fresh parsley and serve chilled or at room temperature."
+        ], 
+        "serving_quantity": 4, 
+        "total_time": 30, 
+        "allergens": [], 
+        "difficulty": "easy"
+    }
+]
