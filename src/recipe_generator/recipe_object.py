@@ -9,4 +9,4 @@ class Recipe(BaseModel):
     serving_quantity: int = Field("...",description="How many people this recipe serves")
     total_time: int = Field("...", description="Estimated time to prepare this recipe (minutes)")
     allergens: list = Field("...", description="List of allergens found in this recipe")
-    diffiulty: Literal['easy', 'medium', 'hard'] = Field("...", description="Recipe level of difficulty")
+    difficulty: Literal['easy', 'medium', 'hard'] = Field("...", description="Recipe level of difficulty")

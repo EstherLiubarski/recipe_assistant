@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import yaml
 import sys
 import pathlib
@@ -7,7 +7,6 @@ sys.path.append(f"{pathlib.Path(__file__).parent.parent.resolve()}")
 
 class BaseTemplateRetriever(ABC):
 
-    # @abstractmethod
     def load_templates(feature:str):
         """Load the file of prompts and prompt templates.
 

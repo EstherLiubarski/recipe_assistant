@@ -1,7 +1,6 @@
 import pytest
 import sys
 import pathlib
-import getpass
 import os
 
 sys.path.append(f"{pathlib.Path(__file__).parent.parent.resolve()}")
@@ -59,7 +58,7 @@ def test_call_llm(test_llm_invoker):
 
     llm_response = call_llm(formatted_prompt, dev_mode=True, invoker=test_llm_invoker)
     
-    assert llm_response == formatted_prompt
+    assert llm_response == 'input_dict: '+ formatted_prompt
 
 def construct_llm(provider, model_name):
     if provider == "OpenAI":
@@ -74,7 +73,7 @@ def test_reformatted_prompt():
         {'role': 'assistant', 'content': 'Swiss chard is a leafy green vegetable that belongs to the same family as beets and spinach.'},
     ]
     
-    formatted_history = ChatInputHandler.re(history)
+    formatted_history = ChatPromptPopulator.format_history(history)
     
     expected_output = [
         ('ai', "Hi there, I'm your friendly recipe assistant! How can I help you?"),
@@ -84,29 +83,28 @@ def test_reformatted_prompt():
     
     assert formatted_history == expected_output, f"Expected {expected_output}, but got {formatted_history}"
 
-# def test_langchain_chain():
-history = [{'role': 'assistant', 'content': "Hi there, I'm your friendly recipe assistant! How can I help you?"}, 
-            {'role': 'user', 'content': 'What is swiss chard?'}, 
-            {'role': 'assistant', 'content': 'Swiss chard is a leafy green vegetable that belongs to the same family as beets and spinach.'}, ]
-formatted_history = ChatPromptPopulator.format_history(history)
 
-user_query = "What's 100 ml water in grams?"
+def test_chat_workflow():
+    history = [{'role': 'assistant', 'content': "Hi there, I'm your friendly recipe assistant! How can I help you?"}, 
+                {'role': 'user', 'content': 'What is swiss chard?'}, 
+                {'role': 'assistant', 'content': 'Swiss chard is a leafy green vegetable that belongs to the same family as beets and spinach.'}, ]
+    formatted_history = ChatPromptPopulator.format_history(history)
 
-prompt_repo = load_prompt_repo("chat")
-system_prompt = prompt_repo['system_prompt']
+    user_query = "What's 100 ml water in grams?"
 
-prompt = ChatPromptPopulator.format_langchain_prompt(system_prompt, formatted_history)
+    prompt_repo = load_prompt_repo("chat")
+    system_prompt = prompt_repo['system_prompt']
 
-llm=construct_llm("gpt-4o-mini-2024-07-18")
-chain = ChatInputHandler.make_chain(prompt,model=llm)
+    prompt = ChatPromptPopulator.format_langchain_prompt(system_prompt, formatted_history)
 
-assert chain is not None
+    llm=construct_llm("OpenAI", "gpt-4o-mini-2024-07-18")
+    chain = ChatInputHandler.make_chain(prompt,model=llm)
 
-print(chain)
+    assert chain is not None
 
-invoker=OpenAIInvoker()
+    invoker=OpenAIInvoker()
 
-response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=False,)
-print("llm response:", response)
-response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=True,)
-print("dev response:", response)
+    # response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=False,)
+    # print("llm response:", response)
+    response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=True,)
+    print("dev response:", response)

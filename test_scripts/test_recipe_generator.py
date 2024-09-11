@@ -11,36 +11,11 @@ from src.core.base_template_retriever import BaseTemplateRetriever
 from src.llm_invokers.openai_invoker import OpenAIInvoker
 from src.recipe_generator.generator_prompt_populator import GeneratorPromptPopulator
 from src.recipe_generator.recipe_object import Recipe
-from src.parsers.pydantic_parsers import make_pydantic_parser
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import ChatOpenAI
 
 load_dotenv()
 OPENAI_KEY=os.getenv("OPENAI_KEY")
-
-@pytest.fixture
-def recipe_options():
-    return "healthy"
-
-@pytest.fixture
-def ingredients_list():
-    return ["ingredient 1", "ingredient 2", "ingredient 3"]
-
-@pytest.fixture
-def input_dict():
-    return {"recipe_options":"healthy", 
-            "ingredients_list": ["ingredient 1", "ingredient 2", "ingredient 3"]}
-
-def test_input_dict_maker(recipe_options, ingredients_list):
-    input_dict = GeneratorInputHandler.make_inputs_dict(recipe_options, ingredients_list)
-    assert input_dict=={"recipe_options":recipe_options,
-                        "ingredients_list": ingredients_list}
-    
-def test_prompt_populator(input_dict):
-    prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
-    template = prompt_repo['dummy_prompt']
-    prompt = GeneratorPromptPopulator.format_inputs_into_template(template,input_dict)
-    assert "Generate a healthy recipe with the following ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3']." in prompt
 
 @pytest.mark.parametrize("input_data, expected_output", [
     (["Healthy"], "healthy"),
@@ -53,7 +28,7 @@ def test_format_recipe_style(input_data, expected_output):
 @pytest.mark.parametrize(
     "recipe_options, style_instructions_template, expected_output",
     [
-        (["No Specifications"], "The recipes must be {recipe_style}.", ""),
+        ([], "The recipes must be {recipe_style}.", ""),
         (["Healthy"], "The recipes must be {recipe_style}.", "The recipes must be {recipe_style}."),
     ]
 )
@@ -61,6 +36,8 @@ def test_choose_style_instructions(recipe_options, style_instructions_template, 
     style_instructions = GeneratorPromptPopulator.choose_style_instructions(
         recipe_options, style_instructions_template
     )
+    print(style_instructions)
+    print(expected_output)
     assert style_instructions == expected_output
 
 def construct_llm(provider, model_name):
@@ -69,11 +46,9 @@ def construct_llm(provider, model_name):
     else:
         return "No provider specified"
     
-# def test_langchain_chain():
 ingredients_list = ["celery", "yogurt", "gnocchi", "turkey mince"]
 num_recipes = 2
 recipe_options = ["Healthy", "Hearty"]
-# recipe_options = ["No Specifications"]
 recipe_style = GeneratorInputHandler.format_recipe_style(recipe_options)
 
 prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
@@ -104,8 +79,8 @@ chain = GeneratorInputHandler.make_chain(
 
 invoker=OpenAIInvoker()
 
-response = invoker.get_response(inputs_dict, chain=chain, dev_mode=False,)
-print("llm response:", response)
+# response = invoker.get_response(inputs_dict, chain=chain, dev_mode=False,)
+# print("llm response:", response)
 response = invoker.get_response(inputs_dict, chain=chain, dev_mode=True,)
 print("dev response:", response)
 

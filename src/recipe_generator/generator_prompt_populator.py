@@ -33,7 +33,7 @@ class GeneratorPromptPopulator(BasePromptPopulator):
             str: empty string if user doesn't specify a recipe style. 
                 Otherwise, returns the style instructions template.
         """
-        if recipe_options==['No Specifications']:
+        if recipe_options==[]:
             return ""
         else:
             return style_instructions_template
