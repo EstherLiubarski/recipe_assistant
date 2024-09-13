@@ -50,6 +50,6 @@ with recipe_col:
 
 with chat_col:
     with st.expander(label='Chat Bot', expanded=True): 
-        display_chat_bot(dev_mode=True)
+        display_chat_bot(dev_mode=False)
 
 

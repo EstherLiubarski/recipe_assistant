@@ -47,7 +47,8 @@ def display_generated_recipes(dev_mode=True):
     recipe_object_list = choose_recipe_list(dev_mode)
 
     for recipe_object in recipe_object_list:
-        with st.expander(label=f"**{recipe_object['name']}**",):
+        # TODO: put expansion state of expander into session state so that it doesn't collapse when users interact with chat bot
+        with st.expander(label=f"**{recipe_object['name']}**",): 
             
             col1, col2 = st.columns(2)
 
