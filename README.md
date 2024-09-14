@@ -182,7 +182,10 @@ pytest test_scripts/test_chat_bot.py::test_generate_input_dict
 ## Future Improvements
 
 - **User inputs -** add allergies, number of servings and metrics as user-configurable inputs.
+- **Wild card** recipes generated if users don't input any ingredients.
 - **Prompt engineering** to improve LLM outputs.
+    - Cooking tips
+    - Fun facts about the ingredients? 
 - **Replace with alternative LLMs** for flexibility of integration into other projects or environments.
 - **Improved error handling** and validation for input.
 - **Database integration** for
