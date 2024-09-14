@@ -49,10 +49,9 @@ with recipe_col:
 
     else:
         # TODO: error for if user hasn't submitted ingredients
-        display_generated_recipes(dev_mode=False)
+        display_generated_recipes(dev_mode=True)
 
 with chat_col:
-    with st.expander(label='Chat Bot', expanded=True): 
-        display_chat_bot(dev_mode=False)
+    display_chat_bot(dev_mode=True)
 
 

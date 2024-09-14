@@ -178,6 +178,17 @@ pytest test_scripts/test_chat_bot.py::test_generate_input_dict
 ```
 
 ---
+## Limitations
+
+There is a bug with the Streamlit expanders. If the users expand/collapse an expander, and then interact with the app that forces the script to rerun, the expanders will revert to their initial state. For example:
+- Recipe 1 is generated and displayed in an expander, whose initial state is collapsed. 
+- User expands recipe 1.
+- User submits query to the chat bot. This makes the Streamlit script rerun.
+- The expander of recipe 1 is now collapsed as this is its initial state. (Ideally the expander would be expanded as that is the state in which the user left it.)
+
+In order to retain the expansion state of the expanders, the backend needs to know the current state of the expander. However, [the current state of the expander is handled entirely in the Streamlit browser and cannot be accessed from the backend](https://discuss.streamlit.io/t/get-expanded-state-of-st-beta-expander/13177/6). Therefore, we cannot save the state of the expander in the backend, to then re-display it in that state when the script is rerun. This will continue to be a limitation until Streamlit allows the backend to know the expansion state of expanders. 
+
+---
 
 ## Future Improvements
 
