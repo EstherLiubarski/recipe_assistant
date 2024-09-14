@@ -15,14 +15,17 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("Recipe Assistant")
-
 if "state_initialised" not in st.session_state:
     State.init_session_states()
 
+st.title("Recipe Assistant")
+
+st.markdown(f"{st.session_state.tool_description}")
+
 with st.sidebar:
     with st.form(key='recipe_inputs'):
-        st.session_state.ingredients_list = st_tags(label='## Enter ingredients',
+        st.write("**Recipe Generator**")
+        st.session_state.ingredients_list = st_tags(label='Enter ingredients',
                                     text='Press enter to add more ingredients',
                                     key='user_ingredients')
         

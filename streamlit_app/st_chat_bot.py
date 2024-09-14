@@ -46,7 +46,7 @@ def display_chat_bot(dev_mode=True) -> None:
     display_history()
 
     # Text input for user to submit query
-    user_query=st.chat_input("Ask me anything.", 
+    user_query=st.chat_input('Ask me anything, e.g. "What is 100g butter in tablespoons?"', 
                                     key="user_query",
                                     on_submit=append_user_history,)
     
