@@ -13,7 +13,7 @@ class State:
                 "##### Happy cooking!",
             "chat_history":[{"role": "assistant", "content": "Hi there, I'm your friendly recipe assistant! How can I help you?"}],
             "prompt_repo": None,
-            "recipe_options":['Healthy', 'Quick', 'Hearty', 'Light', 'Vegan',],
+            "recipe_options":['Healthy', 'Quick', 'Hearty', 'Light', 'Vegan', 'Vegetarian'],
             "ingredients_list":[],
             "recipe_style_list":[],
             "submit_ingredients": False,
