@@ -104,7 +104,5 @@ def test_chat_workflow():
 
     invoker=OpenAIInvoker()
 
-    # response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=False,)
-    # print("llm response:", response)
     response = invoker.get_response({"user_query": user_query}, chain=chain, dev_mode=True,)
-    print("dev response:", response)
+    # print("dev response:", response)

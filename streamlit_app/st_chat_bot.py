@@ -41,20 +41,20 @@ def display_chat_bot(dev_mode=True) -> None:
     Args:
         dev_mode (bool): whether app is running in dev mode
     """
-    
-    # Display previous chat history
-    display_history()
+    with st.expander(label='Chat Bot', expanded=True): 
+        # Display previous chat history
+        display_history()
 
-    # Text input for user to submit query
-    user_query=st.chat_input("Ask me anything.", 
-                                    key="user_query",
-                                    on_submit=append_user_history,)
-    
-    if user_query:
-            
-            # Get response to user query 
-            llm_response = choose_llm_response(dev_mode, user_query)
+        # Text input for user to submit query
+        user_query=st.chat_input('Ask me anything, e.g. "What is 100g butter in tablespoons?"', 
+                                        key="user_query",
+                                        on_submit=append_user_history,)
+        
+        if user_query:
+                
+                # Get response to user query 
+                llm_response = choose_llm_response(dev_mode, user_query)
 
-            # Append LLM response to chat history
-            st.session_state.chat_history.append({"role": "assistant", "content":llm_response})
-            st.rerun()
+                # Append LLM response to chat history
+                st.session_state.chat_history.append({"role": "assistant", "content":llm_response})
+                st.rerun()

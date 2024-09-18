@@ -15,14 +15,17 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("Recipe Assistant")
-
 if "state_initialised" not in st.session_state:
     State.init_session_states()
 
+st.title("Recipe Assistant")
+
+st.markdown(f"{st.session_state.tool_description}")
+
 with st.sidebar:
     with st.form(key='recipe_inputs'):
-        st.session_state.ingredients_list = st_tags(label='## Enter ingredients',
+        st.write("**Recipe Generator**")
+        st.session_state.ingredients_list = st_tags(label='Enter ingredients',
                                     text='Press enter to add more ingredients',
                                     key='user_ingredients')
         
@@ -46,10 +49,9 @@ with recipe_col:
 
     else:
         # TODO: error for if user hasn't submitted ingredients
-        display_generated_recipes(dev_mode=False)
+        display_generated_recipes(dev_mode=True)
 
 with chat_col:
-    with st.expander(label='Chat Bot', expanded=True): 
-        display_chat_bot(dev_mode=False)
+    display_chat_bot(dev_mode=True)
 
 
