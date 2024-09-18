@@ -22,8 +22,8 @@ OPENAI_KEY=os.getenv("OPENAI_KEY")
     (["Healthy", "Hearty"], "healthy and hearty"),
     (["Healthy", "Hearty", "Vegan"], "healthy, hearty and vegan"),
     ])
-def test_format_recipe_style(input_data, expected_output):
-    assert GeneratorInputHandler.format_recipe_style(input_data) == expected_output
+def test_format_list_to_string(input_data, expected_output):
+    assert GeneratorInputHandler.format_list_to_string(input_data) == expected_output
 
 @pytest.mark.parametrize(
     "recipe_options, style_instructions_template, expected_output",
@@ -32,8 +32,8 @@ def test_format_recipe_style(input_data, expected_output):
         (["Healthy"], "The recipes must be {recipe_style}.", "The recipes must be {recipe_style}."),
     ]
 )
-def test_choose_style_instructions(recipe_options, style_instructions_template, expected_output):
-    style_instructions = GeneratorPromptPopulator.choose_style_instructions(
+def test_choose_appropriate_prompt(recipe_options, style_instructions_template, expected_output):
+    style_instructions = GeneratorPromptPopulator.choose_appropriate_prompt(
         recipe_options, style_instructions_template
     )
     print(style_instructions)
@@ -49,18 +49,25 @@ def construct_llm(provider, model_name):
 ingredients_list = ["celery", "yogurt", "gnocchi", "turkey mince"]
 num_recipes = 2
 recipe_options = ["Healthy", "Hearty"]
-recipe_style = GeneratorInputHandler.format_recipe_style(recipe_options)
+allergies_list = ['Dairy']
+recipe_style = GeneratorInputHandler.format_list_to_string(recipe_options)
+allergies = GeneratorInputHandler.format_list_to_string(allergies_list)
 
 prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
 style_instructions_template = prompt_repo['style_instructions_template']
-style_instructions = GeneratorPromptPopulator.choose_style_instructions(recipe_options,style_instructions_template)
+style_instructions = GeneratorPromptPopulator.choose_appropriate_prompt(recipe_options,style_instructions_template)
+
+
+allergies_instructions_template = prompt_repo['allergies_instructions_template']
+allergies_instructions = GeneratorPromptPopulator.choose_appropriate_prompt(allergies_list,allergies_instructions_template)
 
 recipe_instructions = prompt_repo['recipe_instructions']
 
 inputs_dict = GeneratorInputHandler.make_inputs_dict(
     ingredients_list = ingredients_list,
     num_recipes = num_recipes,
-    recipe_style = recipe_style,)
+    recipe_style = recipe_style,
+    allergies=allergies)
 
 parser = JsonOutputParser(pydantic_object=Recipe)
 
@@ -68,7 +75,8 @@ prompt = GeneratorPromptPopulator.format_langchain_prompt(
     template=recipe_instructions,
     input_variables=inputs_dict.keys(),
     format_instructions = parser.get_format_instructions(),
-    style_instructions=style_instructions)
+    style_instructions=style_instructions,
+    allergies_instructions=allergies_instructions)
 
 print("prompt:\n", prompt)
 

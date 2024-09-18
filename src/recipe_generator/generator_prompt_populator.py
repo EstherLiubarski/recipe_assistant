@@ -21,27 +21,28 @@ class GeneratorPromptPopulator(BasePromptPopulator):
             raise ValueError(f"Missing key in arguments: {e}")
         
     @staticmethod
-    def choose_style_instructions(recipe_options:list, style_instructions_template:str) -> str:
-        """Determines appropriate style instructions to include in the main system prompt.
-        Checks if user has selected recipe specifications.
+    def choose_appropriate_prompt(user_inputs:list, prompt_template:str) -> str:
+        """Determines appropriate prompt to include in the main system prompt.
+        Checks if user has specified inputs.
 
         Args:
-            recipe_options (list): _description_
-            style_instructions_template (str): _description_
+            user_inputs (list): user inputs 
+            prompt_template (str): template to return if user has specified inputs
 
         Returns:
-            str: empty string if user doesn't specify a recipe style. 
-                Otherwise, returns the style instructions template.
+            str: empty string if user doesn't specify inputs. 
+                Otherwise, returns the prompt template.
         """
-        if recipe_options==[]:
+        if user_inputs==[]:
             return ""
         else:
-            return style_instructions_template
+            return prompt_template
 
     def format_langchain_prompt(template:str, 
                                 input_variables: list, 
                                 format_instructions:str,
-                                style_instructions: str
+                                style_instructions: str,
+                                allergies_instructions:str,
                                 )-> PromptTemplate:
         """Formats the template, input variables and partial variables into a LangChain prompt template.
 
@@ -49,13 +50,15 @@ class GeneratorPromptPopulator(BasePromptPopulator):
             template (str): instructions to the LLM on how to generate recipes
             input_variables (list): user-specified input variables to be formatted into the template.
             format_instructions (str): instructions for how to parse te LLM output
-            style_instructions (str): style instructios template or empty string if user doesn't specify a recipe style.
+            style_instructions (str): style instructions template or empty string if user doesn't specify a recipe style.
+            allergies_instructions (str): allergies template or empty string if user doesn't specify allergies
 
         Returns:
             PromptTemplate: the prompt template with the formatted input and partial variables
         """
         partial_variables = {"format_instructions": format_instructions,
-                             "style_instructions": style_instructions}
+                             "style_instructions": style_instructions,
+                             "allergies_instructions": allergies_instructions}
         
         prompt = PromptTemplate(
             template=template,

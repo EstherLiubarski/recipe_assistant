@@ -11,6 +11,7 @@ recipe_instructions: |
   </ingredients>
 
   You need to create {num_recipes} recipes using these ingredients.
+  {allergies_instructions}
   {style_instructions}
 
 
@@ -27,3 +28,6 @@ recipe_instructions: |
 
 style_instructions_template: |
   The recipes must be {recipe_style}.
+
+allergies_instructions_template: |
+  Your grandchildren are allergic to {allergies}, so you MUST NOT include those ingredients in your recipes.

@@ -8,6 +8,7 @@ class GeneratorInputHandler(BaseInputHandler):
     def make_inputs_dict(ingredients_list:list, 
                         num_recipes: int, 
                         recipe_style: str,
+                        allergies: str,
                         ) -> dict:
         """Builds dictionary of inputs for chat templates
 
@@ -15,13 +16,15 @@ class GeneratorInputHandler(BaseInputHandler):
             ingredients_list (list): list of ingredients to prioritise in the generated recipt
             num_recipes (int): number of recipes to generate
             recipe_style (str): list of adjectives describing the recipe e.g. healthy, vegan
+            allergies (str): list of allergies to consider when generating recipes
 
         Returns:
             dict: dictionary with required inputs to populate the prompt template
         """
         inputs = {"ingredients_list":ingredients_list, 
                   "num_recipes": num_recipes, 
-                  "recipe_style": recipe_style,}
+                  "recipe_style": recipe_style,
+                  "allergies":allergies}
 
         return inputs
     
@@ -44,27 +47,26 @@ class GeneratorInputHandler(BaseInputHandler):
         return prompt | model | parser
 
     @staticmethod
-    def format_recipe_style(recipe_options:list) -> str:
-        """Format a list of adjectives describing a recipe into a string 
-        that can be formatted into a natural language prompt.
+    def format_list_to_string(input_list:list) -> str:
+        """Format a list into a string that can be formatted into a natural language prompt.
         
 
         Args:
-            recipe_options (list): list of recipe adjectives 
+            input_list (list): list to be formatted into a string
                 e.g. ["Healthy", "Vegan", "Hearty"]
 
         Returns:
-            str: recipe adjectives formatted into a string
+            str: input list formatted into a string
                 e.g. "healthy, vegan and hearty"
         """
-        recipe_options = [option.lower() for option in recipe_options]
+        input_list = [option.lower() for option in input_list]
 
-        if len(recipe_options)==0:
+        if len(input_list)==0:
             return ""
-        elif len(recipe_options) == 1:
-            return recipe_options[0]
+        elif len(input_list) == 1:
+            return input_list[0]
         else:
-            return ', '.join(recipe_options[:-1]) + ' and ' + recipe_options[-1]
+            return ', '.join(input_list[:-1]) + ' and ' + input_list[-1]
         
     
 
