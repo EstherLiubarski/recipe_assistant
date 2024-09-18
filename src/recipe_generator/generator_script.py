@@ -22,29 +22,36 @@ def construct_llm(provider, model_name):
     else:
         return "No provider specified"
     
-def generate_llm_recipes(ingredients_list: list, recipe_options: list, num_recipes: int) -> list[dict]:
+def generate_llm_recipes(ingredients_list: list, recipe_options: list, allergies_list:list, num_recipes: int,) -> list[dict]:
     """Execute the entire recipe generator workflow to return the generated recipe
 
     Args:
         ingredients_list (list): list of ingredients to include in the recipes
         recipe_options (list): list of recipe styles e.g. ["Healthy", "Vegan"]
         num_recipes (int): number of different recipes to generate
+        allergies (list): list of user's allergies
 
     Returns:
         list: list of dictionaries describing recipe objects for each generated recipe
     """
-    recipe_style = GeneratorInputHandler.format_recipe_style(recipe_options)
+    recipe_style = GeneratorInputHandler.format_list_to_string(recipe_options)
+    allergies = GeneratorInputHandler.format_list_to_string(allergies_list)
 
     prompt_repo = BaseTemplateRetriever.load_templates("recipe_generator")
+
     style_instructions_template = prompt_repo['style_instructions_template']
-    style_instructions = GeneratorPromptPopulator.choose_style_instructions(recipe_options,style_instructions_template)
+    style_instructions = GeneratorPromptPopulator.choose_appropriate_prompt(recipe_options,style_instructions_template)
+
+    allergies_instructions_template = prompt_repo['allergies_instructions_template']
+    allergies_instructions = GeneratorPromptPopulator.choose_appropriate_prompt(allergies_list,allergies_instructions_template)
 
     recipe_instructions = prompt_repo['recipe_instructions']
 
     inputs_dict = GeneratorInputHandler.make_inputs_dict(
         ingredients_list = ingredients_list,
         num_recipes = num_recipes,
-        recipe_style = recipe_style,)
+        recipe_style = recipe_style,
+        allergies=allergies)
 
     parser = JsonOutputParser(pydantic_object=Recipe)
 
@@ -52,7 +59,8 @@ def generate_llm_recipes(ingredients_list: list, recipe_options: list, num_recip
         template=recipe_instructions,
         input_variables=inputs_dict.keys(),
         format_instructions = parser.get_format_instructions(),
-        style_instructions=style_instructions)
+        style_instructions=style_instructions,
+        allergies_instructions=allergies_instructions)
 
     chain = GeneratorInputHandler.make_chain(
         prompt,

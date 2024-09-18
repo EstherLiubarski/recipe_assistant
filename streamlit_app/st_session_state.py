@@ -18,6 +18,7 @@ class State:
             "recipe_style_list":[],
             "submit_ingredients": False,
             "clear_ingredients": True,
+            "allergies_list": []
         }
         
         # Add initial session_state values to session_state

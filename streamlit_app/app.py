@@ -29,6 +29,10 @@ with st.sidebar:
                                     text='Press enter to add more ingredients',
                                     key='user_ingredients')
         
+        st.session_state.allergies_list = st_tags(label="Enter your allergies",
+                                             text='Press enter to add more allergies',
+                                             key='user_allergies')
+        
         st.session_state.recipe_style_list = st.multiselect(
             "Select recipe type", 
             options=st.session_state.recipe_options,
@@ -49,7 +53,7 @@ with recipe_col:
 
     else:
         # TODO: error for if user hasn't submitted ingredients
-        display_generated_recipes(dev_mode=True)
+        display_generated_recipes(dev_mode=False)
 
 with chat_col:
     display_chat_bot(dev_mode=True)
