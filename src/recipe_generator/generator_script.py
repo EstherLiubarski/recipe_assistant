@@ -13,7 +13,7 @@ from src.recipe_generator.recipe_object import Recipe
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
+
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 def construct_llm(provider, model_name):

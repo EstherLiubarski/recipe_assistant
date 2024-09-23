@@ -56,6 +56,6 @@ with recipe_col:
         display_generated_recipes(dev_mode=False)
 
 with chat_col:
-    display_chat_bot(dev_mode=True)
+    display_chat_bot(dev_mode=False)
 
 

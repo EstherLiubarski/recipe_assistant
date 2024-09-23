@@ -14,7 +14,7 @@ from src.recipe_generator.recipe_object import Recipe
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
+
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 @pytest.mark.parametrize("input_data, expected_output", [

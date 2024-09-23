@@ -8,8 +8,6 @@ sys.path.append(f"{pathlib.Path(__file__).parent.parent.resolve()}")
 from src.chat_bot.chat_bot_script import invoke_chat_bot
 from st_utils import append_user_history
 
-
-load_dotenv()
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 def display_history():

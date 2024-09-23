@@ -12,7 +12,7 @@ from src.chat_bot.chat_prompt_populator import ChatPromptPopulator
 from src.llm_invokers.openai_invoker import OpenAIInvoker
 from langchain_openai import ChatOpenAI
 
-load_dotenv()
+
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 def load_prompt_repo(feature: str):

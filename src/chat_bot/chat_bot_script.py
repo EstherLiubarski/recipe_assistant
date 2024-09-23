@@ -12,7 +12,7 @@ from src.llm_invokers.openai_invoker import OpenAIInvoker
 from langchain_openai import ChatOpenAI
 
 
-load_dotenv()
+
 OPENAI_KEY=os.getenv("OPENAI_KEY")
 
 def construct_llm(provider, model_name):

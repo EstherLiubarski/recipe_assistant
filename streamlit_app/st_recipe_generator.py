@@ -41,7 +41,7 @@ def choose_recipe_list(dev_mode:bool) -> list[dict]:
             st.session_state.ingredients_list, 
             st.session_state.recipe_style_list,
             st.session_state.allergies_list,
-            num_recipes=1)
+            num_recipes=3)
 
 def display_generated_recipes(dev_mode=True):
 

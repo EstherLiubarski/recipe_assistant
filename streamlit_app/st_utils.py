@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 
-load_dotenv()
+
 
 def set_openai_api_key() -> None:
     """Set the OpenAI environment variable.
