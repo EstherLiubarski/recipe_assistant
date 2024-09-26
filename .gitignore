@@ -14,3 +14,6 @@ venv.bak/
 _docs
 *.txt
 docs/*
+
+# Don't ignore requirements.txt
+!requirements.txt
